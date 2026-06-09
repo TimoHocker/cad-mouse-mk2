@@ -13,8 +13,8 @@ void SleepState::enter() {
 void SleepState::update() {
   inputController.update();
 
-  if (inputController.takeActivity()) {
-    stateMachine.changeState(&StateMachine::idleState);
+  if (inputController.takeBothButtonsHeld()) {
+    stateMachine.changeState(&StateMachine::calibratingState);
     return;
   }
 }

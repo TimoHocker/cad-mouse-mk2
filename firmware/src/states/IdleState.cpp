@@ -12,9 +12,9 @@ void IdleState::enter() {
   ledController.setSolid(Config::LED_IDLE_COLOR);
 }
 
-bool IdleState::handleCalibrationRequest() {
-  if (inputController.takeCalibrationRequest()) {
-    stateMachine.changeState(&StateMachine::calibratingState);
+bool IdleState::handleBothButtonsHeld() {
+  if (inputController.takeBothButtonsHeld()) {
+    stateMachine.changeState(&StateMachine::sleepState);
     return true;
   }
   return false;
@@ -48,7 +48,7 @@ void IdleState::handleSleepTransition(unsigned long now) {
 void IdleState::update() {
   inputController.update();
 
-  if (handleCalibrationRequest()) {
+  if (handleBothButtonsHeld()) {
     return;
   }
 
@@ -61,7 +61,7 @@ void IdleState::update() {
                                         : ((now - lastUpdateMs_) / 1000.0);
   lastUpdateMs_ = now;
   runMotionPipeline(dt, now);
-  handleSleepTransition(now);
+  //handleSleepTransition(now);
 }
 
 void IdleState::exit() {}

@@ -9,7 +9,7 @@ class IdleState : public State {
   void exit() override;
 
  private:
-  bool handleCalibrationRequest();
+  bool handleBothButtonsHeld();
   void runMotionPipeline(float dt, unsigned long now);
   void handleSleepTransition(unsigned long now);
 
