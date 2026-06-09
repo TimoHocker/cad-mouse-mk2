@@ -40,8 +40,11 @@ void IdleState::runMotionPipeline(float dt, unsigned long now) {
 
 void IdleState::handleSleepTransition(unsigned long now) {
   const unsigned long inactiveMs = now - lastActivityMs_;
-  if (inactiveMs >= Config::IDLE_SLEEP_TIMEOUT_MS) {
-    stateMachine.changeState(&StateMachine::sleepState);
+  noMotion_ = inactiveMs >= Config::IDLE_SLEEP_TIMEOUT_MS;
+  if (noMotion_) {
+    ledController.startRainbow();
+  } else {
+    ledController.setSolid(Config::LED_IDLE_COLOR);
   }
 }
 
@@ -62,6 +65,9 @@ void IdleState::update() {
   lastUpdateMs_ = now;
   runMotionPipeline(dt, now);
   //handleSleepTransition(now);
+  if (noMotion_) {
+    ledController.updateSpinner();
+  }
 }
 
 void IdleState::exit() {}
