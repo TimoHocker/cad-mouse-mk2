@@ -36,10 +36,10 @@ const float AXIS_LIMIT = 350.0;
 // RGB LEDs
 const int LED_COUNT = 8;
 const int LED_BRIGHTNESS = 40;
-const unsigned long LED_IDLE_COLOR = 0x00FF00;
+const unsigned long LED_IDLE_COLOR = 0x00FFBB;
 const unsigned long LED_CALIBRATING_COLOR = 0x0000FF;
 
 // FSM timing
-const long IDLE_SLEEP_TIMEOUT_MS = 2 * 60 * 1000;
+const long IDLE_SLEEP_TIMEOUT_MS = 10 * 1000;
 
 }  // namespace Config
