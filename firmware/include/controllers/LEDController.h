@@ -9,6 +9,7 @@ class LEDController {
   void begin();
   void setSolid(unsigned long color);
   void startSpinner(unsigned long color);
+  void startRainbow();
   void updateSpinner();
   void off();
 
@@ -17,6 +18,7 @@ class LEDController {
     Off,
     Solid,
     Spinner,
+    Rainbow
   };
 
   void setPower(bool enabled);

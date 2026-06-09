@@ -54,8 +54,18 @@ void LEDController::startSpinner(unsigned long color) {
   setPower(true);
 }
 
+void LEDController::startRainbow() {
+  if (mode_ == Mode::Rainbow) {
+    return;
+  }
+  mode_ = Mode::Rainbow;
+  spinnerIndex_ = 0;
+  lastSpinnerStepMs_ = 0;
+  setPower(true);
+}
+
 void LEDController::updateSpinner() {
-  if (mode_ != Mode::Spinner) {
+  if (mode_ != Mode::Spinner && mode_ != Mode::Rainbow) {
     return;
   }
 
@@ -64,14 +74,23 @@ void LEDController::updateSpinner() {
     return;
   }
   lastSpinnerStepMs_ = now;
-
-  fillAll(0);
+  
   int pixelCount = ring_.numPixels();
-  ring_.setPixelColor(spinnerIndex_, color_);
-  ring_.show();
+  int maxSpinnerIndex = (mode_ == Mode::Rainbow) ? 255 : pixelCount;
 
+  if (mode_ == Mode::Rainbow) {
+    for (int i = 0; i < pixelCount; i++) {
+      int hue = (spinnerIndex_ + i * (256 / pixelCount)) % 256;
+      ring_.setPixelColor(i, ring_.ColorHSV(hue * 256, 255, 255));
+    }
+    ring_.show();
+  } else if (mode_ == Mode::Spinner) {
+    fillAll(0);
+    ring_.setPixelColor(spinnerIndex_, color_);
+    ring_.show();
+  }
   spinnerIndex_++;
-  if (spinnerIndex_ >= pixelCount) {
+  if (spinnerIndex_ >= maxSpinnerIndex) {
     spinnerIndex_ = 0;
   }
 }
