@@ -10,7 +10,7 @@ class InputController {
   void update();
 
   uint16_t buttonBits() const;
-  bool takeCalibrationRequest();
+  bool takeBothButtonsHeld();
   bool takeActivity();
 
  private:
@@ -22,10 +22,10 @@ class InputController {
   ace_button::AceButton leftBtn_;
   ace_button::AceButton rightBtn_;
 
-  bool calibrationRequested_ = false;
+  bool bothButtonsHeld_ = false;
   bool hadActivity_ = false;
   unsigned long bothHeldStartMs_ = 0;
-  bool calibrationHoldFired_ = false;
+  bool bothHoldingStarted = false;
   bool leftPressed_ = false;
   bool rightPressed_ = false;
 

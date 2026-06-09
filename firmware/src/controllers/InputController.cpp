@@ -23,10 +23,10 @@ void InputController::begin() {
   cfg->setEventHandler(handleButtonEvent);
 
   instance_ = this;
-  calibrationRequested_ = false;
+  bothButtonsHeld_ = false;
   hadActivity_ = false;
   bothHeldStartMs_ = 0;
-  calibrationHoldFired_ = false;
+  bothHoldingStarted = false;
   leftPressed_ = false;
   rightPressed_ = false;
 }
@@ -38,7 +38,7 @@ void InputController::update() {
 
   if (!areBothPressed()) {
     bothHeldStartMs_ = 0;
-    calibrationHoldFired_ = false;
+    bothHoldingStarted = false;
     return;
   }
 
@@ -47,10 +47,10 @@ void InputController::update() {
     return;
   }
 
-  if (!calibrationHoldFired_ && (now - bothHeldStartMs_) >= kCalibrationHoldMs) {
-    calibrationRequested_ = true;
+  if (!bothHoldingStarted && (now - bothHeldStartMs_) >= kCalibrationHoldMs) {
+    bothButtonsHeld_ = true;
     hadActivity_ = true;
-    calibrationHoldFired_ = true;
+    bothHoldingStarted = true;
   }
 }
 
@@ -65,9 +65,9 @@ uint16_t InputController::buttonBits() const {
   return bits;
 }
 
-bool InputController::takeCalibrationRequest() {
-  const bool out = calibrationRequested_;
-  calibrationRequested_ = false;
+bool InputController::takeBothButtonsHeld() {
+  const bool out = bothButtonsHeld_;
+  bothButtonsHeld_ = false;
   return out;
 }
 
